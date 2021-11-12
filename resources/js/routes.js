@@ -11,9 +11,15 @@ let routes = [
     {
         path : '/profile',
         component : require('./components/profile.vue').default
+    },
+    {
+        path : '/users',
+        component : require('./components/users.vue').default
     }
 ];
 
 export default new VueRouter({
-    routes
+    mode : 'history',
+    routes,
+    linkActiveClass : 'active'
 });

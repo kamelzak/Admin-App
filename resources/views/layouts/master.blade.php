@@ -90,7 +90,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                with font-awesome or any other icon font library -->
             <router-link tag="li" class="nav-item" to="/dashboard" exact>
             <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <i class="nav-icon fas fa-tachometer-alt blue"></i>
                 <p>
                 Dashboard
                 </p>
@@ -98,46 +98,44 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </router-link>
 
             <li class="nav-item">
-            <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-cog"></i>
-                <p>
-                Management
-                <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <router-link tag="li" class="nav-item" to="#" exact>
-                <a href="#" class="nav-link active">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Active Page</p>
-                </a>
-                </router-link>
-                <router-link tag="li" class="nav-item" to="#" exact>
                 <a href="#" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Inactive Page</p>
+                    <i class="nav-icon fas fa-cog green"></i>
+                    <p>
+                    Management
+                    <i class="right fas fa-angle-left"></i>
+                    </p>
                 </a>
-                </router-link>
-            </ul>
+                <ul class="nav nav-treeview">
+                    <router-link tag="li" class="nav-item" to="/users" exact>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-users nav-icon indigo"></i>
+                        <p>users</p>
+                    </a>
+                    </router-link>
+                </ul>
             </li>
 
             <router-link tag="li" class="nav-item" to="/profile" exact>
                 <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-user"></i>
+                    <i class="nav-icon fas fa-user orange"></i>
                     <p>
                     Profile
                     </p>
                 </a>
             </router-link>
 
-            <router-link tag="li" class="nav-item" to="#" exact>
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-power-off"></i>
-                    <p>
-                    Logout
-                    </p>
+            <li class="nav-item">
+
+                <a class="nav-link" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
+                        <i class="nav-icon fas fa-power-off red"></i>
+                        <p>Logout</p>
                 </a>
-            </router-link>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </li>
           
         </ul>
       </nav>
@@ -175,7 +173,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
-
 <script src="{{ asset('js/app.js') }}" defer></script>
+
 </body>
 </html>
