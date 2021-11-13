@@ -15,6 +15,10 @@ let routes = [
     {
         path : '/users',
         component : require('./components/users.vue').default
+    },
+    {
+        path : '/developper',
+        component : require('./components/developper.vue').default
     }
 ];
 

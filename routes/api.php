@@ -8,3 +8,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResources(['users' => 'App\Http\Controllers\API\UserController']);
+
+Route::get('profile', 'App\Http\Controllers\API\UserController@profile');
+Route::put('profile', 'App\Http\Controllers\API\UserController@updateProfile');

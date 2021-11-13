@@ -124,6 +124,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </a>
             </router-link>
 
+            <router-link tag="li" class="nav-item" to="/developper" exact>
+              <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-cogs"></i>
+                  <p>
+                  Developper
+                  </p>
+              </a>
+          </router-link>
+
             <li class="nav-item">
 
                 <a class="nav-link" href="{{ route('logout') }}"
@@ -153,7 +162,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="container-fluid">
 
             <router-view></router-view> 
-            
+
             <vue-progress-bar></vue-progress-bar>
 
       </div><!-- /.container-fluid -->
