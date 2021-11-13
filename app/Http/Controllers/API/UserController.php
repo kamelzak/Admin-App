@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User; 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
 
     public function index()
     {
-        return User::all();
+        return User::latest()->paginate(10);
     }
 
     public function store(Request $request)
@@ -40,27 +41,18 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user=User::find($id);
+        $user=User::findOrFail($id);
+        
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user)],
+            'type' => 'nullable',
+            'bio' => ['nullable', 'string'],
+            'photo' => 'nullable',
+            'password' => ['sometimes', 'string', 'max:255', 'min:8', 'confirmed']
+        ]);
         if($request['password']){
-            $data = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'max:255'],
-                'type' => 'nullable',
-                'bio' => ['nullable', 'string'],
-                'photo' => ['nullable', 'file'],
-                'password' => ['required', 'string', 'max:255', 'min:8', 'confirmed']
-            ]);
             $data['password'] = Hash::make($data['password']);
-        }
-        else
-        {
-            $data = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'max:255'],
-                'type' => 'nullable',
-                'bio' => ['nullable', 'string'],
-                'photo' => ['nullable', 'file']
-            ]);
         }
         $user = User::where('id', $id)->update($data, $id);
         return response($user, 200);

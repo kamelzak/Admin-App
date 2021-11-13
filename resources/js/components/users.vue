@@ -7,7 +7,7 @@
                 <h3 class="card-title">Users Table</h3>
                 
                 <div class="card-tools">
-                   <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Add New <i class="fas fa-user-plus fa-fw"></i></button>
+                   <button class="btn btn-success" @click="addUserModal">Add New <i class="fas fa-user-plus fa-fw"></i></button>
                 </div>
                 
                 <!-- New user modal -->
@@ -15,12 +15,13 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add new</h5>
+                        <h5 class="modal-title" id="exampleModalLabel" v-if="!editMode">Add new user</h5>
+                        <h5 class="modal-title" id="exampleModalLabel" v-if="editMode">Update user</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
-                      <form @submit.prevent="createUser">
+                      <form @submit.prevent="editMode ? updateUser() :createUser()">
                         <div class="modal-body">
                             <div class="form-group">
                               <label for="name">Name</label>
@@ -49,25 +50,27 @@
 
                             <div class="form-group">
                               <label for="password">Password</label>
-                              <input class="form-control" v-model="form.password" type="password" placeholder="password" required>
+                              <input class="form-control" v-model="form.password" type="password" >
                               <HasError :form="form" field="password" />
                             </div>   
 
                             <div class="form-group">
                               <label for="password_confirmation">Password confirmation</label>
-                              <input class="form-control" v-model="form.password_confirmation" type="password" placeholder="password_confirmation" required>
+                              <input class="form-control" v-model="form.password_confirmation" type="password" >
                             </div> 
                          
                         </div>
                       
                         <div class="modal-footer">
                           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary">Create</button>
+                          <button type="submit" class="btn btn-primary" v-if="!editMode">Create</button>
+                          <button type="submit" class="btn btn-primary" v-if="editMode">Update</button>
                         </div>
                       </form>
                     </div>
                   </div>
                 </div>
+                <!-- end modal -->
               </div> 
               <!-- end card-header -->
               <div class="card-body table-responsive p-0">
@@ -78,6 +81,7 @@
                       <th>Name</th>
                       <th>Email</th>
                       <th>Role</th>
+                      <th>Registered at</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -86,13 +90,14 @@
                       <td>{{ user.id }}</td>
                       <td>{{ user.name }}</td>
                       <td>{{ user.email }}</td>
-                      <td><span class="tag tag-success">{{ user.type }}</span></td>
+                      <td>{{ user.type | capitalize }}</td>
+                      <td>{{ user.created_at | myDate }}</td>
                       <td>
                           <div>
-                            <a href="#">
+                            <a href="#" @click="editUserModal(user)">
                                 <i class="fa fa-edit blue"></i>
                             </a>
-                            <a href="#">
+                            <a href="#" @click="deleteUser(user.id)">
                                 <i class="fa fa-trash red"></i>
                             </a>
                           </div>
@@ -119,6 +124,7 @@ import Form from 'vform';
       data() {
         return {
           form : new Form({
+            id: '',
             name : '',
             email : '',
             password : '',
@@ -127,21 +133,87 @@ import Form from 'vform';
             bio : '',
             photo : ''
           }),
-          users : []
-           
+          users : [],
+          editMode : false
         }
       },
       methods: {
-            createUser() {
-              this.form.post('/api/users');
-            },
             getUsers() {
               axios.get('/api/users')
-                .then(response => this.users=response.data);
+                .then(response => this.users=response.data.data)
+                .catch(error => console.log(error));
+            },
+            createUser() {
+              this.form.post('/api/users')
+                .then(response => {
+                  this.$Progress.start();
+                  Fire.$emit('UsersChanged');
+                  $('#exampleModal').modal('hide');
+                  Toast.fire({
+                    icon: 'success',
+                    title: 'User created successfully'
+                  });
+                  this.$Progress.finish();
+                })
+                .catch(error => console.log(error));
+            },
+            updateUser() {
+              this.$Progress.start();
+              this.form.put('/api/users/'+this.form.id)
+              .then(response => {
+                Fire.$emit('UsersChanged');
+                $('#exampleModal').modal('hide');
+                Toast.fire({
+                  icon: 'success',
+                  title: 'User updated successfully'
+                });
+                this.$Progress.finish();
+              })
+              .catch(error => {
+                this.$Progress.fail();
+                console.log(error);
+              });
+            },
+            deleteUser(id) {
+                Swal.fire({
+                text: "Are you sure you want to delete this user ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    axios.delete('api/users/'+id)
+                    .then(response => {
+                      Fire.$emit('UsersChanged');
+                      Swal.fire(
+                      'Deleted!',
+                      'the user has been deleted.',
+                      'success'
+                    )
+                    })
+                    .catch(error => console.log(error));
+                  }
+              });
+            },
+            addUserModal() {
+              this.editMode = false;
+              this.form.reset();
+              $('#exampleModal').modal('show');
+            },
+            editUserModal(user) {
+              this.editMode = true;
+              this.form.reset();
+              this.form.fill(user);
+              $('#exampleModal').modal('show');
             }
         },
         mounted() {
           this.getUsers();
+          Fire.$on('UsersChanged', () => {
+            this.getUsers();
+          });
         },
     }
 </script>
