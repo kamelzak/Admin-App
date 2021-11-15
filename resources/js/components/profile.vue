@@ -9,7 +9,7 @@
                     <h5 class="widget-user-desc">{{form.type}}</h5>
                 </div>
                 <div class="widget-user-image">
-                    <img class="img-circle" src="img/avatar.png" alt="User Avatar">
+                    <img class="img-circle" :src="getProfilePicture()" alt="User Avatar">
                 </div>
                 <div class="card-footer">
                     <div class="row">
@@ -66,16 +66,16 @@
                                     <label for="inputName" class="col-sm-2 control-label">Name</label>
 
                                     <div class="col-sm-12">
-                                    <input type="text" v-model="form.name" class="form-control" id="inputName" placeholder="Name">
-                                     
+                                    <input type="text" v-model="form.name" class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
+                                    <HasError :form="form" field="name" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputEmail" class="col-sm-2 control-label">Email</label>
 
                                     <div class="col-sm-12">
-                                    <input type="email" v-model="form.email" class="form-control" id="inputEmail" placeholder="Email" >
-                                     
+                                    <input type="email" v-model="form.email" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                                     <HasError :form="form" field="email" />
                                     </div>
                                 </div>
 
@@ -83,8 +83,8 @@
                                     <label for="inputExperience" class="col-sm-2 control-label">Biography</label>
 
                                     <div class="col-sm-12">
-                                    <textarea v-model="form.bio" class="form-control" id="inputExperience" placeholder="Experience" ></textarea>
-                                     
+                                    <textarea v-model="form.bio" class="form-control" :class="{ 'is-invalid': form.errors.has('bio') }" ></textarea>
+                                     <HasError :form="form" field="bio" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -92,21 +92,20 @@
                                     <div class="col-sm-12">
                                         <input type="file" @change="updateProfilePicture" name="photo" class="form-input">
                                     </div>
-
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="password" class="col-sm-12 control-label">Passport (leave empty if not changing)</label>
-
+                                    <label for="password" class="col-sm-12 control-label">Password (leave empty if not changing)</label>
                                     <div class="col-sm-12">
-                                    <input type="password"
-                                        
-                                        class="form-control"
-                                        id="password"
-                                        placeholder="Passport"
-                                        
-                                    >
-                                     
+                                        <input v-model="form.password" type="password" class="form-control" :class="{ 'is-invalid': form.errors.has('password') }" placeholder="Password">
+                                        <HasError :form="form" field="password" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password_confirmation" class="col-sm-12 control-label">Password confirmation (leave empty if not changing)</label>
+                                    <div class="col-sm-12">
+                                        <input v-model="form.password_confirmation" type="password" class="form-control" placeholder="Password confirmation">
                                     </div>
                                 </div>
 
@@ -149,33 +148,60 @@ import axios from 'axios';
             }
         },
         methods: {
+            getProfilePicture() {
+                let photo = (this.form.photo.length > 200) ? this.form.photo : "img/profile/"+ this.form.photo ;
+                return photo;
+            },
             getProfile() {
                 axios.get('/api/profile')
                 .then(response => {
                     this.form.fill(response.data);
                 })
-                .catch(error => console.log(error));
+                .catch(error => {
+                    console.log(error);
+                }); 
             },
             updateProfilePicture(e) {
                 //console.log('uploading picture');
                 let file = e.target.files[0];
                 let reader = new FileReader();
-                reader.onloadend = (file) => {
+                if (file['size'] < 2111775) {
+                    reader.onloadend = (file) => {
                     //console.log('RESULT', reader.result);
                     this.form.photo = reader.result;
+                    }
+                    reader.readAsDataURL(file);
                 }
-                reader.readAsDataURL(file);
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'The file must not be more than 2 mb '
+                    })
+                }
             },
             updateProfile() {
+                this.$Progress.start();
                 this.form.put('/api/profile')
                 .then(response => {
-
+                    Fire.$emit('UsersChanged');
+                    Toast.fire({
+                    icon: 'success',
+                    title: 'User updated successfully'
+                    });
+                    this.$Progress.finish();
                 })
-                .catch(error => console.log(error));
+                .catch(error => {
+                    this.$Progress.fail();
+                    console.log(error);
+                });
             }
         },
         mounted() {
             this.getProfile();
+            Fire.$on('UsersChanged', () => {
+            this.getProfile();
+          });
         },
     }
 </script>
