@@ -6,6 +6,9 @@ import moment from 'moment';
 import {Button, HasError, AlertError, AlertErrors, AlertSuccess} from 'vform/src/components/bootstrap4';
 import VueProgressBar from 'vue-progressbar';
 import Swal from 'sweetalert2';
+import Gate from './Gate';
+
+Vue.prototype.$gate = new Gate(window.user);
 
 window.Swal = Swal;
 const Toast = Swal.mixin({
@@ -40,6 +43,8 @@ Vue.component('passport-clients', require('./components/passport/Clients.vue').d
 Vue.component('passport-authorized-clients', require('./components/passport/AuthorizedClients.vue').default);
 
 Vue.component('passport-personal-access-tokens', require('./components/passport/PersonalAccessTokens.vue').default);
+
+Vue.component('not-found', require('./components/NotFound.vue').default);
 
 Vue.filter('capitalize', function (text) {
     return text.charAt(0).toUpperCase() + text.slice(1);

@@ -67,7 +67,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <img src="{{ asset('img/avatar.png') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{auth()->user()->name}}</a>
+          <a href="#" class="d-block">{{auth()->user()->name}}<p>{{auth()->user()->type}}</p></a>
         </div>
       </div>
 
@@ -97,6 +97,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
             </router-link>
 
+            @can('isAdmin')
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-cog green"></i>
@@ -114,6 +115,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </router-link>
                 </ul>
             </li>
+            @endcan
 
             <router-link tag="li" class="nav-item" to="/profile" exact>
                 <a href="#" class="nav-link">
@@ -124,6 +126,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </a>
             </router-link>
 
+            @can('isAdmin')
             <router-link tag="li" class="nav-item" to="/developper" exact>
               <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-cogs"></i>
@@ -131,7 +134,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   Developper
                   </p>
               </a>
-          </router-link>
+            </router-link>
+            @endcan
 
             <li class="nav-item">
 
@@ -182,6 +186,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
   </footer>
 </div>
 <!-- ./wrapper -->
+
+@auth
+  <script>
+    window.user = @json(auth()->user())
+  </script>
+@endauth
 
 <!-- REQUIRED SCRIPTS -->
 <script src="{{ asset('js/app.js') }}" defer></script>

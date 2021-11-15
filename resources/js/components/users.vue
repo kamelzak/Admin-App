@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-          <div class="col-12 mt-4">
+          <div class="col-12 mt-4" v-if="$gate.isAdmin()">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Users Table</h3>
@@ -110,7 +110,12 @@
             </div>
             <!-- end card -->
           </div>
+          <div>
+            <not-found v-if="!$gate.isAdmin()"></not-found>
+          </div>
         </div>
+
+        
 
     </div>
 
@@ -139,9 +144,11 @@ import Form from 'vform';
       },
       methods: {
             getUsers() {
-              axios.get('/api/users')
-                .then(response => this.users=response.data.data)
-                .catch(error => console.log(error));
+              if (this.$gate.isAdmin()) {
+                axios.get('/api/users')
+                  .then(response => this.users=response.data.data)
+                  .catch(error => console.log(error));
+              }
             },
             createUser() {
               this.form.post('/api/users')
@@ -193,7 +200,13 @@ import Form from 'vform';
                       'success'
                     )
                     })
-                    .catch(error => console.log(error));
+                    .catch(error => { 
+                      console.log(error);
+                      Swal.fire({
+                        icon: 'error',
+                        text: 'Something went wrong!',
+                      });
+                    });
                   }
               });
             },

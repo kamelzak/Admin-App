@@ -162,7 +162,6 @@ import axios from 'axios';
                 }); 
             },
             updateProfilePicture(e) {
-                //console.log('uploading picture');
                 let file = e.target.files[0];
                 let reader = new FileReader();
                 if (file['size'] < 2111775) {

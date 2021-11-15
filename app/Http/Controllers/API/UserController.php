@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Models\User; 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -66,6 +67,7 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+        //$this->authorize('isAdmin');
         $user=User::find($id);
         $user->delete();
         return response('user deleted', 200);
