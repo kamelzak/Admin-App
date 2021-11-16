@@ -19,6 +19,10 @@ let routes = [
     {
         path : '/developper',
         component : require('./components/developper.vue').default
+    },
+    {
+        path : '*',
+        component : require('./components/NotFound.vue').default
     }
 ];
 

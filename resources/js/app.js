@@ -46,6 +46,8 @@ Vue.component('passport-personal-access-tokens', require('./components/passport/
 
 Vue.component('not-found', require('./components/NotFound.vue').default);
 
+Vue.component('pagination', require('laravel-vue-pagination'));
+
 Vue.filter('capitalize', function (text) {
     return text.charAt(0).toUpperCase() + text.slice(1);
 });
@@ -58,6 +60,13 @@ window.Fire = new Vue();
 
 const app = new Vue({
     el: '#app',
-
-    router
+    router,
+    data : {
+      search : ''
+    },
+    methods: {
+      searchit() {
+        Fire.$emit('searching');
+      }
+    },
 });

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-          <div class="col-12 mt-4" v-if="$gate.isAdmin()">
+          <div class="col-12 mt-4" v-if="$gate.isAdminOrAuthor()">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Users Table</h3>
@@ -25,17 +25,17 @@
                         <div class="modal-body">
                             <div class="form-group">
                               <label for="name">Name</label>
-                              <input class="form-control" v-model="form.name" type="text" name="name" required>
+                              <input class="form-control" :class="{ 'is-invalid': form.errors.has('name') }"  v-model="form.name" type="text" name="name" required>
                               <HasError :form="form" field="name" />
                             </div>
                             <div class="form-group">
                               <label for="email">Email</label>
-                              <input class="form-control" v-model="form.email" type="email" name="email" required>
+                              <input class="form-control" :class="{ 'is-invalid': form.errors.has('email') }"  v-model="form.email" type="email" name="email" required>
                               <HasError :form="form" field="email" />
                             </div>  
                             <div class="form-group">
                               <label for="bio">Bio</label>
-                              <textarea class="form-control" v-model="form.bio" type="text" name="bio"></textarea>
+                              <textarea class="form-control" :class="{ 'is-invalid': form.errors.has('bio') }"  v-model="form.bio" type="text" name="bio"></textarea>
                               <HasError :form="form" field="bio" />
                             </div> 
                             <div class="form-group">
@@ -50,7 +50,7 @@
 
                             <div class="form-group">
                               <label for="password">Password</label>
-                              <input class="form-control" v-model="form.password" type="password" >
+                              <input class="form-control" :class="{ 'is-invalid': form.errors.has('password') }"  v-model="form.password" type="password" >
                               <HasError :form="form" field="password" />
                             </div>   
 
@@ -86,7 +86,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(user, idx) in users" :key="idx">
+                    <tr v-for="(user, idx) in users.data" :key="idx">
                       <td>{{ user.id }}</td>
                       <td>{{ user.name }}</td>
                       <td>{{ user.email }}</td>
@@ -107,11 +107,16 @@
                 </table>
               </div>
               <!-- end card-body -->
+              <div class="card-footer">
+                <div class="float-right">
+                  <pagination :data="users" @pagination-change-page="getResults"></pagination>
+                </div>
+              </div>
             </div>
             <!-- end card -->
           </div>
           <div>
-            <not-found v-if="!$gate.isAdmin()"></not-found>
+            <not-found v-if="!$gate.isAdminOrAuthor()"></not-found>
           </div>
         </div>
 
@@ -144,9 +149,9 @@ import Form from 'vform';
       },
       methods: {
             getUsers() {
-              if (this.$gate.isAdmin()) {
+              if (this.$gate.isAdminOrAuthor()) {
                 axios.get('/api/users')
-                  .then(response => this.users=response.data.data)
+                  .then(response => this.users=response.data)
                   .catch(error => console.log(error));
               }
             },
@@ -220,9 +225,23 @@ import Form from 'vform';
               this.form.reset();
               this.form.fill(user);
               $('#exampleModal').modal('show');
+            },
+            getResults(page = 1) {
+              axios.get('/api/users?page=' + page)
+                .then(response => {
+                  this.users = response.data;
+                });
             }
         },
         mounted() {
+          Fire.$on('searching', () => {
+            let query = this.$parent.search;
+            axios.get('/api/user?q='+ query)
+            .then(response => {
+              this.users = response.data;
+            })
+            .catch(error => console.log(error));
+          });
           this.getUsers();
           Fire.$on('UsersChanged', () => {
             this.getUsers();

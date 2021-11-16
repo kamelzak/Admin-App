@@ -11,3 +11,5 @@ Route::apiResources(['users' => 'App\Http\Controllers\API\UserController']);
 
 Route::get('profile', 'App\Http\Controllers\API\UserController@profile');
 Route::put('profile', 'App\Http\Controllers\API\UserController@updateProfile');
+
+Route::get('user', 'App\Http\Controllers\API\UserController@getUser');
