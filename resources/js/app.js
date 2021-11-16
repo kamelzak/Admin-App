@@ -7,6 +7,7 @@ import {Button, HasError, AlertError, AlertErrors, AlertSuccess} from 'vform/src
 import VueProgressBar from 'vue-progressbar';
 import Swal from 'sweetalert2';
 import Gate from './Gate';
+import _ from 'lodash';
 
 Vue.prototype.$gate = new Gate(window.user);
 
@@ -65,8 +66,8 @@ const app = new Vue({
       search : ''
     },
     methods: {
-      searchit() {
+      searchit: _.debounce(() => {
         Fire.$emit('searching');
-      }
+      },2000) 
     },
 });

@@ -2137,7 +2137,7 @@ var Gate = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vform/src/components/bootstrap4 */ "./node_modules/vform/src/components/bootstrap4/index.js");
@@ -2146,6 +2146,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _Gate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Gate */ "./resources/js/Gate.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_6__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
@@ -2155,7 +2157,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].prototype.$gate = new _Gate__WEBPACK_IMPORTED_MODULE_5__["default"](window.user);
+
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].prototype.$gate = new _Gate__WEBPACK_IMPORTED_MODULE_5__["default"](window.user);
 window.Swal = (sweetalert2__WEBPACK_IMPORTED_MODULE_4___default());
 var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default().mixin({
   toast: true,
@@ -2169,39 +2172,39 @@ var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default().mixin({
   }
 });
 window.Toast = Toast;
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].use((vue_progressbar__WEBPACK_IMPORTED_MODULE_3___default()), {
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].use((vue_progressbar__WEBPACK_IMPORTED_MODULE_3___default()), {
   color: 'rgb(143, 255, 199)',
   failedColor: 'red',
   height: '2px'
 });
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component(vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.Button.name, vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.Button);
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component(vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.HasError.name, vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.HasError);
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component(vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.AlertError.name, vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.AlertError);
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component(vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.AlertErrors.name, vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.AlertErrors);
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component(vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.AlertSuccess.name, vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.AlertSuccess);
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component(vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.Button.name, vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.Button);
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component(vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.HasError.name, vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.HasError);
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component(vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.AlertError.name, vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.AlertError);
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component(vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.AlertErrors.name, vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.AlertErrors);
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component(vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.AlertSuccess.name, vform_src_components_bootstrap4__WEBPACK_IMPORTED_MODULE_2__.AlertSuccess);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"];
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('passport-clients', __webpack_require__(/*! ./components/passport/Clients.vue */ "./resources/js/components/passport/Clients.vue")["default"]);
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('passport-authorized-clients', __webpack_require__(/*! ./components/passport/AuthorizedClients.vue */ "./resources/js/components/passport/AuthorizedClients.vue")["default"]);
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('passport-personal-access-tokens', __webpack_require__(/*! ./components/passport/PersonalAccessTokens.vue */ "./resources/js/components/passport/PersonalAccessTokens.vue")["default"]);
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('not-found', __webpack_require__(/*! ./components/NotFound.vue */ "./resources/js/components/NotFound.vue")["default"]);
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('pagination', __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].filter('capitalize', function (text) {
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('passport-clients', __webpack_require__(/*! ./components/passport/Clients.vue */ "./resources/js/components/passport/Clients.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('passport-authorized-clients', __webpack_require__(/*! ./components/passport/AuthorizedClients.vue */ "./resources/js/components/passport/AuthorizedClients.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('passport-personal-access-tokens', __webpack_require__(/*! ./components/passport/PersonalAccessTokens.vue */ "./resources/js/components/passport/PersonalAccessTokens.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('not-found', __webpack_require__(/*! ./components/NotFound.vue */ "./resources/js/components/NotFound.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].component('pagination', __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].filter('capitalize', function (text) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 });
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].filter('myDate', function (date) {
+vue__WEBPACK_IMPORTED_MODULE_7__["default"].filter('myDate', function (date) {
   return moment__WEBPACK_IMPORTED_MODULE_1___default()(date).format('DD-MM-YYYY');
 });
-window.Fire = new vue__WEBPACK_IMPORTED_MODULE_6__["default"]();
-var app = new vue__WEBPACK_IMPORTED_MODULE_6__["default"]({
+window.Fire = new vue__WEBPACK_IMPORTED_MODULE_7__["default"]();
+var app = new vue__WEBPACK_IMPORTED_MODULE_7__["default"]({
   el: '#app',
   router: _routes__WEBPACK_IMPORTED_MODULE_0__["default"],
   data: {
     search: ''
   },
   methods: {
-    searchit: function searchit() {
+    searchit: lodash__WEBPACK_IMPORTED_MODULE_6___default().debounce(function () {
       Fire.$emit('searching');
-    }
+    }, 2000)
   }
 });
 
