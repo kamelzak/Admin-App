@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/auth/redirect', 'App\Http\Controllers\Auth\LoginController@redirectToProvider');
+
+Route::get('/auth/callback', 'App\Http\Controllers\Auth\LoginController@handleProviderCallBack');
+
 Route::get('/', function () {
     return redirect('/dashboard');
 });
