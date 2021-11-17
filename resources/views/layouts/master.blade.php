@@ -95,6 +95,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
             </router-link>
 
+            @can('isUser')
+            <router-link tag="li" class="nav-item" to="/tasks" exact>
+              <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-tasks teal"></i>
+                  <p>
+                  Tasks
+                  </p>
+              </a>
+              </router-link>
+            @endcan
+
             @can('isAdminOrAuthor')
             <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -104,11 +115,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
+                @can('isAuthor')
+                <ul class="nav nav-treeview">
+                  <router-link tag="li" class="nav-item" to="/tasks-management" exact>
+                  <a href="#" class="nav-link">
+                      <i class="fas fa-tasks nav-icon teal"></i>
+                      <p>Tasks</p>
+                  </a>
+                  </router-link>
+                </ul>
+                @endcan
                 <ul class="nav nav-treeview">
                     <router-link tag="li" class="nav-item" to="/users" exact>
                     <a href="#" class="nav-link">
                         <i class="fas fa-users nav-icon indigo"></i>
-                        <p>users</p>
+                        <p>Users</p>
                     </a>
                     </router-link>
                 </ul>

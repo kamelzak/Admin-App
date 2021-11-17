@@ -13,3 +13,5 @@ Route::get('profile', 'App\Http\Controllers\API\UserController@profile');
 Route::put('profile', 'App\Http\Controllers\API\UserController@updateProfile');
 
 Route::get('user', 'App\Http\Controllers\API\UserController@getUser');
+
+Route::apiResources(['tasks' => 'App\Http\Controllers\API\TaskController']);

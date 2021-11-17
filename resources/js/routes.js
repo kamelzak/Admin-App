@@ -21,6 +21,14 @@ let routes = [
         component : require('./components/developper.vue').default
     },
     {
+        path : '/tasks',
+        component : require('./components/tasks.vue').default
+    },
+    {
+        path : '/tasks-management',
+        component : require('./components/tasksManagement.vue').default
+    },
+    {
         path : '*',
         component : require('./components/NotFound.vue').default
     }

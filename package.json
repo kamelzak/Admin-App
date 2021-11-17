@@ -27,10 +27,13 @@
         "@fortawesome/fontawesome-free": "^5.15.4",
         "admin-lte": "^3.0.0-alpha.2",
         "laravel-vue-pagination": "^2.3.1",
+        "luxon": "^1.28.0",
         "moment": "^2.29.1",
         "sweetalert2": "^11.1.10",
         "vform": "^2.1.2",
         "vue-progressbar": "^0.7.5",
-        "vue-router": "^3.5.3"
+        "vue-router": "^3.5.3",
+        "vue2-datepicker": "^3.10.3",
+        "weekstart": "^1.1.0"
     }
 }

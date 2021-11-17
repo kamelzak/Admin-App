@@ -77,7 +77,7 @@
                 <table class="table table-hover text-nowrap">
                   <thead>
                     <tr>
-                      <th>ID</th>
+                      <th></th>
                       <th>Name</th>
                       <th>Email</th>
                       <th>Role</th>
@@ -87,7 +87,7 @@
                   </thead>
                   <tbody>
                     <tr v-for="(user, idx) in users.data" :key="idx">
-                      <td>{{ user.id }}</td>
+                      <td>{{ idx + 1 }}</td>
                       <td>{{ user.name }}</td>
                       <td>{{ user.email }}</td>
                       <td>{{ user.type | capitalize }}</td>
