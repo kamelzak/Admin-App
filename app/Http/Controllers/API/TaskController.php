@@ -11,7 +11,20 @@ class TaskController extends Controller
 {
     public function index()
     {
-        return Task::orderBy('end_date','ASC')->paginate(10);
+        return Task::where('finished', false)->orderBy('end_date','ASC')->paginate(10);
+    }
+
+    public function endedTasks()
+    {
+        return Task::where('finished', true)->orderBy('end_date','DESC')->paginate(10);
+    }
+
+    public function endTask($task_id)
+    {
+        $task = Task::findOrFail($task_id);
+        $task->finished = true;
+        $task->save();
+        return response('Task marked as ended', 200);
     }
 
     public function store(Request $request)
@@ -67,7 +80,7 @@ class TaskController extends Controller
         return response('Task aborted', 200);
     }
 
-    public function shwoUsersAssigned($task_id) 
+    public function showUsersAssigned($task_id) 
     {
         $task = Task::find($task_id);
         $users = $task->users;

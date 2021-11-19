@@ -96,7 +96,7 @@
         methods: {
             getTasks() {
               if (this.$gate.isAuthor()) {
-                axios.get('/api/tasks')
+                axios.get('/api/ended-tasks')
                   .then(response => this.tasks=response.data)
                   .catch(error => console.log(error));
               }

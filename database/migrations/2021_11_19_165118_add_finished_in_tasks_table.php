@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ChangeDateTypeInTasksTable extends Migration
+class AddFinishedInTasksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,8 +15,7 @@ class ChangeDateTypeInTasksTable extends Migration
     {
         Schema::table('tasks', function (Blueprint $table) {
             //
-            $table->date('start_date')->change();
-            $table->date('end_date')->change();
+            $table->boolean('finished')->default(false);
         });
     }
 

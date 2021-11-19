@@ -18,6 +18,8 @@ Route::apiResources(['tasks' => 'App\Http\Controllers\API\TaskController']);
 
 Route::post('tasks/{task_id}/attach', 'App\Http\Controllers\API\TaskController@assignTask');
 Route::get('tasks/{task_id}/detach/{user_id}', 'App\Http\Controllers\API\TaskController@abortTask');
-Route::get('tasks/{task_id}/users', 'App\Http\Controllers\API\TaskController@shwoUsersAssigned');
+Route::get('tasks/{task_id}/users', 'App\Http\Controllers\API\TaskController@showUsersAssigned');
+Route::get('ended-tasks', 'App\Http\Controllers\API\TaskController@endedTasks');
+Route::post('tasks/{task_id}/end', 'App\Http\Controllers\API\TaskController@endTask');
 
 

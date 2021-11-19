@@ -2502,7 +2502,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       if (this.$gate.isAuthor()) {
-        axios.get('/api/tasks').then(function (response) {
+        axios.get('/api/ended-tasks').then(function (response) {
           return _this.tasks = response.data;
         })["catch"](function (error) {
           return console.log(error);
@@ -3749,6 +3749,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3909,6 +3915,24 @@ __webpack_require__.r(__webpack_exports__);
         Fire.$emit('UsersAssignedChanged');
       })["catch"](function (error) {
         return console.log(error);
+      });
+    },
+    endTask: function endTask(task_id) {
+      Swal.fire({
+        text: "Are you sure you want to mark this task as ended ?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios.post('/api/tasks/' + task_id + '/end').then(function (response) {
+            Fire.$emit('TasksChanged');
+          })["catch"](function (error) {
+            return console.log(error);
+          });
+        }
       });
     }
   },
@@ -89747,6 +89771,31 @@ var render = function() {
                               [_c("i", { staticClass: "fa fa-trash red" })]
                             )
                           ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "div",
+                            { staticClass: "d-flex justify-content-center" },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.endTask(task.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-check-square green"
+                                  })
+                                ]
+                              )
+                            ]
+                          )
                         ])
                       ])
                     }),
@@ -89965,7 +90014,13 @@ var staticRenderFns = [
           ])
         ]),
         _vm._v(" "),
-        _c("th", [_vm._v("Actions")])
+        _c("th", [_vm._v("Actions")]),
+        _vm._v(" "),
+        _c("th", [
+          _c("div", { staticClass: "d-flex justify-content-center" }, [
+            _vm._v("Mark as ended")
+          ])
+        ])
       ])
     ])
   },
