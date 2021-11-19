@@ -124,6 +124,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </a>
                   </router-link>
                 </ul>
+                <ul class="nav nav-treeview">
+                  <router-link tag="li" class="nav-item" to="/ended-tasks" exact>
+                  <a href="#" class="nav-link">
+                      <i class="fas fa-clipboard-check nav-icon cyan"></i>
+                      <p>Ended Tasks</p>
+                  </a>
+                  </router-link>
+                </ul>
                 @endcan
                 <ul class="nav nav-treeview">
                     <router-link tag="li" class="nav-item" to="/users" exact>

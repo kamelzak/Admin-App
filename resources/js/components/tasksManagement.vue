@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-12 mt-4" v-if="$gate.isAdminOrAuthor()">
+            <div class="col-12 mt-4" v-if="$gate.isAuthor()">
                 <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Tasks list</h3>
@@ -10,7 +10,7 @@
                     <button class="btn btn-success" @click="addTaskModal">Add <i class="fas fa-plus fa-fw"></i></button>
                     </div>
                     
-                    <!-- New user modal -->
+                    <!-- Add/Edit task modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -29,12 +29,12 @@
                                 <HasError :form="form" field="name" />
                                 </div>
                                 <div class="form-group">
-                                <label for="start_date">Starting date</label>
+                                <label for="start_date">Starting date</label><br>
                                 <date-picker v-model="form.start_date" valueType="format"></date-picker>
                                 <HasError :form="form" field="start_date" />
                                 </div>  
                                 <div class="form-group">
-                                <label for="end_date">Ending date</label>
+                                <label for="end_date">Ending date</label><br>
                                 <date-picker v-model="form.end_date" valueType="format"></date-picker>
                                 <HasError :form="form" field="end_date" />
                                 </div> 
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                     </div>
-                    <!-- end modal -->
+                    <!-- end Add/Edit task modal -->
                 </div> 
                 <!-- end card-header -->
                 <div class="card-body table-responsive p-0">
@@ -61,7 +61,7 @@
                         <th>Name</th>
                         <th>Starting date</th>
                         <th>Ending date</th>
-                        <th>Users assigned</th>
+                        <th><div class="d-flex justify-content-center">Users assigned</div></th>
                         <th>Actions</th>
                         </tr>
                     </thead>
@@ -71,15 +71,15 @@
                         <td>{{ task.name }}</td>
                         <td>{{ task.start_date }}</td>
                         <td>{{ task.end_date  }}</td>
-                        <td>Users assigned list</td>
+                        <td>
+                          <div class="d-flex justify-content-center">
+                            <a href="#" @click="showUsersModal(task.id)"><i class="fa fa-users green"></i></a>
+                          </div>
+                        </td>
                         <td>
                             <div>
-                                <a href="#" @click="editTaskModal(task)">
-                                    <i class="fa fa-edit blue"></i>
-                                </a>
-                                <a href="#" @click="deleteTask(task.id)">
-                                    <i class="fa fa-trash red"></i>
-                                </a>
+                                <a href="#" @click="editTaskModal(task)"><i class="fa fa-edit blue"></i></a>
+                                <a href="#" @click="deleteTask(task.id)"><i class="fa fa-trash red"></i></a>
                             </div>
                         </td>
                         </tr>
@@ -98,6 +98,58 @@
                 <not-found></not-found>
             </div>
         </div>
+        <!-- Users assigned modal -->
+        <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Users assigned list</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                <div class="modal-body">
+                  <table v-if="users_assigned.length>0" class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Abort</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(user, idx) in users_assigned" :key="idx">
+                          <td>{{user.name}}</td>
+                          <td>{{user.email}}</td>
+                          <td><a href="#" @click="abortTask(task_id,user.id)"><i class="fa fa-user-times red"></i></a></td>
+                        </tr>
+                    </tbody>
+                  </table>
+                  <div v-if="users_assigned.length==0"> 
+                    No users assigned to this task yet
+                  </div>
+                  <hr>
+                  <h5 class="modal-title" id="exampleModalLabel">Assign user to this task</h5>
+                  <form @submit.prevent="assignUser(task_id)">
+                    <div class="d-flex justify-content-start mt-3">
+                      <div class="form-group">
+                          <input class="form-control" :class="{ 'is-invalid': form.errors.has('email') }"  v-model="form2.email" type="email" name="email" placeholder="Email" required>
+                          <HasError :form="form2" field="email" />
+                      </div>
+                      <div class="ml-2">
+                        <button type="submit" class="btn btn-primary">Assign</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+            
+                <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!-- end users assigned modal -->
     </div>
 </template>
 
@@ -116,7 +168,12 @@ import 'vue2-datepicker/index.css';
             end_date : ''
           }),
           tasks : [],
-          editMode : false
+          editMode : false,
+          users_assigned : [],
+          task_id : '',
+          form2 : new Form({
+            email : ''
+          })
         }
       },
       components: {
@@ -206,6 +263,45 @@ import 'vue2-datepicker/index.css';
                 .then(response => {
                   this.tasks = response.data;
                 });
+            },
+            getUsersAssigned(task_id) {
+              axios.get('/api/tasks/'+task_id+'/users')
+                  .then(response => this.users_assigned=response.data)
+                  .catch(error => console.log(error));
+            },
+            showUsersModal(task_id) {
+              this.getUsersAssigned(task_id);
+              Fire.$on('UsersAssignedChanged', () => {
+                this.getUsersAssigned(task_id);
+              });
+              this.task_id = task_id;
+              $('#exampleModal2').modal('show');
+            },
+            abortTask(task_id, user_id) {
+              Swal.fire({
+                text: "Are you sure you want to unassign this user from this task ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  axios.get('/api/tasks/'+task_id+'/detach/'+user_id)
+                  .then(response => {
+                    Fire.$emit('UsersAssignedChanged');
+                  })
+                  .catch(error => console.log(error));
+                }
+              })
+            },
+            assignUser(task_id) {
+              this.form2.post('/api/tasks/'+task_id+'/attach')
+                .then(response => {
+                  this.form2.email = '';
+                  Fire.$emit('UsersAssignedChanged');
+                })
+                .catch(error => console.log(error));
             }
         },
         mounted() {

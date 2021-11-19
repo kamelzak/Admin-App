@@ -29,6 +29,10 @@ let routes = [
         component : require('./components/tasksManagement.vue').default
     },
     {
+        path : '/ended-tasks',
+        component : require('./components/endedTasks.vue').default
+    },
+    {
         path : '*',
         component : require('./components/NotFound.vue').default
     }

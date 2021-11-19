@@ -45,4 +45,32 @@ class TaskController extends Controller
         $task->delete();
         return response('task deleted', 200);
     }
+
+    public function assignTask($task_id, Request $request)
+    {
+        $task = Task::find($task_id);
+
+        $data = $request->validate([
+            'email' => ['required', 'string', 'max:255', 'exists:users,email']
+        ]);
+
+        $user = User::where('email', $data['email'])->firstOrFail();
+        $task->users()->save($user);
+        return response('Task assigned', 200);
+    }
+
+    public function abortTask($task_id, $user_id)
+    {
+        $task = Task::find($task_id);
+        $user = User::find($user_id);
+        $task->users()->detach($user);
+        return response('Task aborted', 200);
+    }
+
+    public function shwoUsersAssigned($task_id) 
+    {
+        $task = Task::find($task_id);
+        $users = $task->users;
+        return $users;
+    }
 }
