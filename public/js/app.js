@@ -3576,7 +3576,135 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      tasks: [],
+      users_assigned: []
+    };
+  },
+  methods: {
+    getTasks: function getTasks() {
+      var _this = this;
+
+      if (this.$gate.isUser()) {
+        axios.get('/api/my-tasks').then(function (response) {
+          return _this.tasks = response;
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      }
+    },
+    getUsersAssigned: function getUsersAssigned(task_id) {
+      var _this2 = this;
+
+      axios.get('/api/tasks/' + task_id + '/users').then(function (response) {
+        return _this2.users_assigned = response.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    showUsersModal: function showUsersModal(task_id) {
+      this.getUsersAssigned(task_id);
+      $('#exampleModal2').modal('show');
+    },
+    endTask: function endTask(task_id) {
+      Swal.fire({
+        text: "Are you sure you want to mark this task as completed ?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios.post('/api/tasks/' + task_id + '/end').then(function (response) {
+            Fire.$emit('TasksChanged');
+          })["catch"](function (error) {
+            return console.log(error);
+          });
+        }
+      });
+    }
+  },
+  mounted: function mounted() {
+    var _this3 = this;
+
+    this.getTasks();
+    Fire.$on('TasksChanged', function () {
+      _this3.getTasks();
+    });
+  }
+});
 
 /***/ }),
 
@@ -3594,12 +3722,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.es.js");
 /* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/index.esm.js");
 /* harmony import */ var vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue2-datepicker/index.css */ "./node_modules/vue2-datepicker/index.css");
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -3915,24 +4037,6 @@ __webpack_require__.r(__webpack_exports__);
         Fire.$emit('UsersAssignedChanged');
       })["catch"](function (error) {
         return console.log(error);
-      });
-    },
-    endTask: function endTask(task_id) {
-      Swal.fire({
-        text: "Are you sure you want to mark this task as ended ?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes'
-      }).then(function (result) {
-        if (result.isConfirmed) {
-          axios.post('/api/tasks/' + task_id + '/end').then(function (response) {
-            Fire.$emit('TasksChanged');
-          })["catch"](function (error) {
-            return console.log(error);
-          });
-        }
       });
     }
   },
@@ -89421,11 +89525,140 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _vm.$gate.isUser()
-      ? _c("div", { staticClass: "row justify-content-center" }, [_vm._m(0)])
-      : _vm._e(),
+    _c("div", { staticClass: "row" }, [
+      _vm.$gate.isUser()
+        ? _c("div", { staticClass: "col-12 mt-4" }, [
+            _c("div", { staticClass: "card" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body table-responsive p-0" }, [
+                _c("table", { staticClass: "table table-hover text-nowrap" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.tasks.data, function(task, idx) {
+                      return _c("tr", { key: idx }, [
+                        _c("td"),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(task.name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(task.start_date))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(task.end_date))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "div",
+                            { staticClass: "d-flex justify-content-center" },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.showUsersModal(task.id)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "fa fa-users green" })]
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "div",
+                            { staticClass: "d-flex justify-content-center" },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.endTask(task.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-check-square green"
+                                  })
+                                ]
+                              )
+                            ]
+                          )
+                        ])
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ])
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.$gate.isUser() ? _c("div", [_c("not-found")], 1) : _vm._e()
+    ]),
     _vm._v(" "),
-    !_vm.$gate.isUser() ? _c("div", [_c("not-found")], 1) : _vm._e()
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "exampleModal2",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "exampleModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _vm.users_assigned.length > 0
+                  ? _c("table", { staticClass: "table table-striped" }, [
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.users_assigned, function(user, idx) {
+                          return _c("tr", { key: idx }, [
+                            _c("td", [_vm._v(_vm._s(user.name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(user.email))])
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.users_assigned.length == 0
+                  ? _c("div", [
+                      _vm._v(
+                        " \n                No users we assigned to this task\n              "
+                      )
+                    ])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _vm._m(4)
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -89433,12 +89666,88 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-8" }, [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-body" }, [
-          _vm._v("\n                    Tasks\n                ")
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("My tasks")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th"),
+        _vm._v(" "),
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Starting date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Ended date")]),
+        _vm._v(" "),
+        _c("th", [
+          _c("div", { staticClass: "d-flex justify-content-center" }, [
+            _vm._v("Users assigned")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("th", [
+          _c("div", { staticClass: "d-flex justify-content-center" }, [
+            _vm._v("Mark as completed")
+          ])
         ])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Users assigned list")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Email")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Close")]
+      )
     ])
   }
 ]
@@ -89771,31 +90080,6 @@ var render = function() {
                               [_c("i", { staticClass: "fa fa-trash red" })]
                             )
                           ])
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "div",
-                            { staticClass: "d-flex justify-content-center" },
-                            [
-                              _c(
-                                "a",
-                                {
-                                  attrs: { href: "#" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.endTask(task.id)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass: "fa fa-check-square green"
-                                  })
-                                ]
-                              )
-                            ]
-                          )
                         ])
                       ])
                     }),
@@ -90014,13 +90298,7 @@ var staticRenderFns = [
           ])
         ]),
         _vm._v(" "),
-        _c("th", [_vm._v("Actions")]),
-        _vm._v(" "),
-        _c("th", [
-          _c("div", { staticClass: "d-flex justify-content-center" }, [
-            _vm._v("Mark as ended")
-          ])
-        ])
+        _c("th", [_vm._v("Actions")])
       ])
     ])
   },

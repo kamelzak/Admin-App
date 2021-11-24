@@ -21,5 +21,6 @@ Route::get('tasks/{task_id}/detach/{user_id}', 'App\Http\Controllers\API\TaskCon
 Route::get('tasks/{task_id}/users', 'App\Http\Controllers\API\TaskController@showUsersAssigned');
 Route::get('ended-tasks', 'App\Http\Controllers\API\TaskController@endedTasks');
 Route::post('tasks/{task_id}/end', 'App\Http\Controllers\API\TaskController@endTask');
+Route::get('my-tasks', 'App\Http\Controllers\API\TaskController@showMyTasks');
 
 

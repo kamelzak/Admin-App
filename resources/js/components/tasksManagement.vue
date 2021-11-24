@@ -63,7 +63,6 @@
                         <th>Ending date</th>
                         <th><div class="d-flex justify-content-center">Users assigned</div></th>
                         <th>Actions</th>
-                        <th><div class="d-flex justify-content-center">Mark as ended</div></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,11 +81,6 @@
                                 <a href="#" @click="editTaskModal(task)"><i class="fa fa-edit blue"></i></a>
                                 <a href="#" @click="deleteTask(task.id)"><i class="fa fa-trash red"></i></a>
                             </div>
-                        </td>
-                        <td>
-                          <div class="d-flex justify-content-center">
-                            <a href="#" @click="endTask(task.id)"><i class="fa fa-check-square green"></i></a>
-                          </div>
                         </td>
                         </tr>
                     </tbody>
@@ -308,24 +302,6 @@ import 'vue2-datepicker/index.css';
                   Fire.$emit('UsersAssignedChanged');
                 })
                 .catch(error => console.log(error));
-            },
-            endTask(task_id) {
-              Swal.fire({
-                text: "Are you sure you want to mark this task as ended ?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  axios.post('/api/tasks/'+task_id+'/end')
-                  .then(response => {
-                    Fire.$emit('TasksChanged');
-                  })
-                  .catch(error => console.log(error));
-                }
-              })
             }
         },
         mounted() {

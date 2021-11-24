@@ -86,4 +86,9 @@ class TaskController extends Controller
         $users = $task->users;
         return $users;
     }
+
+    public function showMyTasks() 
+    {
+        return auth('api')->user()->tasks->where('finished', false);
+    }
 }
