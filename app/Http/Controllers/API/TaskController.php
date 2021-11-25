@@ -89,6 +89,6 @@ class TaskController extends Controller
 
     public function showMyTasks() 
     {
-        return auth('api')->user()->tasks->where('finished', false);
+        return auth('api')->user()->tasks->where('finished', false)->sortBy('end_date');
     }
 }

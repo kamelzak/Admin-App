@@ -14,7 +14,7 @@
                         <th></th>
                         <th>Name</th>
                         <th>Starting date</th>
-                        <th>Ended date</th>
+                        <th>Ending date</th>
                         <th><div class="d-flex justify-content-center">Users assigned</div></th>
                         <th><div class="d-flex justify-content-center">Mark as completed</div></th>
                         </tr>
